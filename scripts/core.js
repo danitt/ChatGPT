@@ -1,6 +1,6 @@
 /**
  * @name core.js
- * @version 0.1.0
+ * @version 0.1.1
  * @url https://github.com/lencx/ChatGPT/tree/main/scripts/core.js
  */
 
@@ -85,6 +85,7 @@ function coreInit() {
 
         if (window.location.host === 'chat.openai.com') {
           const nav = document.body.querySelector('nav');
+          const top = topDom.clientHeight + 5;
           if (nav) {
             const currentPaddingTop = parseInt(
               window
@@ -94,10 +95,28 @@ function coreInit() {
               10,
             );
             const navStyleDom = document.createElement('style');
-            navStyleDom.innerHTML = `nav{padding-top:${
-              currentPaddingTop + topDom.clientHeight
-            }px !important}`;
+            navStyleDom.innerHTML = `nav{
+              padding-top:${currentPaddingTop + top}px !important
+            }
+            button[aria-label="Show sidebar"]{
+              margin-top:${top}px !important
+            }
+            `;
             document.head.appendChild(navStyleDom);
+          } else {
+            const navStyleDom = document.createElement('style');
+            navStyleDom.innerHTML = `nav{
+              padding-top:${top}px !important
+            }
+            button[aria-label="Show sidebar"]{
+              margin-top:${top}px !important
+            }
+            `;
+            document.head.appendChild(navStyleDom);
+            const main = document.querySelector('main');
+            if (main && main.parentElement.children.length > 1) {
+              main.parentElement.children[0].style.paddingTop = top + 'px';
+            }
           }
         }
 
